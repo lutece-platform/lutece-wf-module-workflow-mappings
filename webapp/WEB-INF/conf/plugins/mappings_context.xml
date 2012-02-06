@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context-3.0.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+
+	<tx:annotation-driven/>
+	
+	<!-- DAO -->
+	<bean id="workflow-mappings.codeMappingDAO" class="fr.paris.lutece.plugins.workflow.modules.mappings.business.CodeMappingDAO" 
+		p:codeMappingFactory-ref="workflow-mappings.codeMappingFactory"/>
+	
+	<!-- Services -->
+	<bean id="workflow-mappings.codeMappingService" class="fr.paris.lutece.plugins.workflow.modules.mappings.service.CodeMappingService" 
+		p:codeMappingDAO-ref="workflow-mappings.codeMappingDAO" />
+	
+	<!-- Mapping types -->
+	<bean id="workflow-mappings.simpleMappingType" class="fr.paris.lutece.plugins.workflow.modules.mappings.business.type.SimpleMappingType" />
+	<bean id="workflow-mappings.actionMappingType" class="fr.paris.lutece.plugins.workflow.modules.mappings.business.type.ActionMappingType" />
+	<bean id="workflow-mappings.simpleMapping" class="fr.paris.lutece.plugins.workflow.modules.mappings.business.SimpleCodeMapping" scope="prototype" 
+		p:mappingType-ref="workflow-mappings.simpleMappingType" />
+	<bean id="workflow-mappings.actionMapping" class="fr.paris.lutece.plugins.workflow.modules.mappings.business.ActionCodeMapping" scope="prototype" 
+		p:mappingType-ref="workflow-mappings.actionMappingType" p:codeMappingService-ref="workflow-mappings.codeMappingService" />
+	
+ 	<!-- Mapping type components -->
+ 	<bean id="workflow-mappings.simpleMappingTypeComponent" class="fr.paris.lutece.plugins.workflow.modules.mappings.web.component.SimpleMappingTypeComponent" 
+		p:mappingType-ref="workflow-mappings.simpleMappingType" />
+	<bean id="workflow-mappings.actionMappingTypeComponent" class="fr.paris.lutece.plugins.workflow.modules.mappings.web.component.ActionMappingTypeComponent"
+		p:mappingType-ref="workflow-mappings.actionMappingType" p:codeMappingService-ref="workflow-mappings.codeMappingService" />
+	<bean id="workflow-mappings.codeMappingFactory" class="fr.paris.lutece.plugins.workflow.modules.mappings.business.CodeMappingFactory" />
+</beans>

@@ -1,0 +1,37 @@
+<div id="content-box-actions">
+	<form method="post" action="jsp/admin/plugins/workflow/modules/mappings/CreateCodeMapping.jsp">
+        <input type="submit" value="#i18n{module.workflow.mappings.manageMappings.btnCreateMapping}" class="button bt-toolbar" />
+    </form>
+</div>
+<div class="content-box" >
+    <h2>#i18n{module.workflow.mappings.manageMappings.tableLabel}</h2>
+    <div class="content-box-content">
+    	<table>
+    		<tr>
+    			<th>#i18n{module.workflow.mappings.manageMappings.labelCode}</th>
+    			<th>#i18n{module.workflow.mappings.manageMappings.labelCodeLabel}</th>
+    			<th>#i18n{module.workflow.mappings.manageMappings.labelReferenceCodeLabel}</th>
+    			<th>#i18n{module.workflow.mappings.manageMappings.labelMappingType}</th>
+    			<th>#i18n{module.workflow.mappings.manageMappings.labelActions}</th>
+    		</tr>
+	    	<#if listCodeMappings?? && listCodeMappings?has_content>
+	    		<#list listCodeMappings as codeMapping>
+	    			<tr>
+	    				<td>${codeMapping.code!}</td>
+	    				<td>${codeMapping.labelCode!}</td>
+	    				<td>${codeMapping.getLabelReferenceCode( locale )!}</td>
+	    				<td>${codeMapping.mappingType.getLabel( locale )!}</td>
+	    				<td>
+	    					<a href="jsp/admin/plugins/workflow/modules/mappings/ModifyCodeMapping.jsp?code=${codeMapping.code!}&amp;mappingTypeKey=${codeMapping.mappingType.key!}">
+				        		<img src="images/admin/skin/actions/modify.png" alt="#i18n{portal.util.labelModify}" title="#i18n{portal.util.labelModify}" />
+				        	</a>
+				            <a href="jsp/admin/plugins/workflow/modules/mappings/RemoveCodeMapping.jsp?code=${codeMapping.code!}&amp;mappingTypeKey=${codeMapping.mappingType.key!}" >
+				                <img src="images/admin/skin/actions/delete.png" alt="#i18n{portal.util.labelDelete}" title="#i18n{portal.util.labelDelete}" />
+				            </a>
+	    				</td>
+	    			</tr>
+	    		</#list>
+	    	</#if>
+    	</table>
+	</div>
+</div>

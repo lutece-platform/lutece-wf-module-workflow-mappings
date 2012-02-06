@@ -1,0 +1,18 @@
+<#assign idWorkflow = "">
+<#if workflow??>
+	<#assign idWorkflow = workflow.id>
+</#if>
+<fieldset>
+	<legend>#i18n{module.workflow.mappings.createMapping.labelReferenceCode}</legend>
+	<p>
+		<label for="idWorkflow">#i18n{module.workflow.mappings.createMapping.labelWorkflow} * :</label>
+		<@combo name="idWorkflow" default_value="${idWorkflow}" items=listWorkflows />
+		<input type="submit" class="button" name="selectWorkflow" value="#i18n{module.workflow.mappings.createMapping.btnSelect}" />
+	</p>
+	<#if workflow??>
+		<p>
+			<label for="referenceCode">#i18n{module.workflow.mappings.createMapping.labelAction} * :</label>
+			<@combo name="referenceCode" default_value="" items=listActions />
+		</p>
+	</#if>
+</fieldset>

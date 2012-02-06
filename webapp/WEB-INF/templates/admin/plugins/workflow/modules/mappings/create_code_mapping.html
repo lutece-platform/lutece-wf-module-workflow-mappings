@@ -1,0 +1,34 @@
+<#assign defaultMappingTypeKey = "workflow-mapping.simpleMapping">
+<#if mappingTypeKey?? && mappingTypeKey != ''>
+	<#assign defaultMappingTypeKey = mappingTypeKey>
+</#if>
+
+<div class="content-box" >
+    <h2>#i18n{module.workflow.mappings.createMapping.pageTitle}</h2>
+    <div class="content-box-content">
+    	<form method="post" action="jsp/admin/plugins/workflow/modules/mappings/DoCreateCodeMapping.jsp">
+    		<p>
+    			<label for="mappingTypeKey">#i18n{module.workflow.mappings.createMapping.labelMappingTypeKey} * : </label>
+   				<@combo name="mappingTypeKey" default_value="${defaultMappingTypeKey}" items=listMappingTypes />
+   				<input type="submit" name="selectMappingTypes" class="button" value="#i18n{module.workflow.mappings.createMapping.btnSelect}" />
+    		</p>
+    		<#if referenceCodeForm??>
+	    		<p>
+	    			<label for="code">#i18n{module.workflow.mappings.createMapping.labelCode} * : </label>
+	    			<input type="text" name="code" value="${code!}" size="35" maxlength="255" />
+	    		</p>
+	    		<p>
+	    			<label for="labelCode">#i18n{module.workflow.mappings.createMapping.labelCodeLabel} : </label>
+	    			<input type="text" name="labelCode" value="${labelCode!}" size="35" maxlength="255" />
+	    		</p>
+	    		${referenceCodeForm!}
+    		</#if>
+    		<p>
+    			<#if referenceCodeForm??>
+    				<input type="submit" name="create" class="button" value="#i18n{portal.util.labelCreate}" />
+    			</#if>
+    			<input type="submit" name="cancel" class="button" value="#i18n{portal.util.labelCancel}" />
+    		</p>
+    	</form>
+	</div>
+</div>

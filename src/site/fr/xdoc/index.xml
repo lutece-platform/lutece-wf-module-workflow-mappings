@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+	<properties>
+		<title>Module workflow mappings</title>
+	</properties>
+	<body>
+		<section name="Module workflow mappings">
+			<subsection name="Introduction">
+				Ce module permet de g&#233;rer dynamiquement des mappings entre des codes et
+				les ressources du plugin-workflow.
+			</subsection>
+		</section>
+	</body>
+</document>

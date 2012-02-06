@@ -1,0 +1,26 @@
+<div class="content-box" >
+    <h2>#i18n{module.workflow.mappings.modifyMapping.pageTitle}</h2>
+    <div class="content-box-content">
+    	<form method="post" action="jsp/admin/plugins/workflow/modules/mappings/DoModifyCodeMapping.jsp">
+    		<p>
+    			<label for="mappingTypeKey">#i18n{module.workflow.mappings.modifyMapping.labelMappingTypeKey} * : </label>
+    			<b>${codeMapping.mappingType.getLabel( locale )!}</b>
+    			<input type="hidden" name="mappingTypeKey" value="${codeMapping.mappingType.key}" />
+    		</p>
+    		<p>
+    			<label for="code">#i18n{module.workflow.mappings.modifyMapping.labelCode} * : </label>
+    			<b>${codeMapping.code!}</b>
+    			<input type="hidden" name="code" value="${codeMapping.code}" />
+    		</p>
+    		<p>
+    			<label for="labelCode">#i18n{module.workflow.mappings.modifyMapping.labelCodeLabel} : </label>
+    			<input type="text" name="labelCode" value="${codeMapping.labelCode!}" size="35" maxlength="255" />
+    		</p>
+    		${referenceCodeForm!}
+    		<p>
+   				<input type="submit" name="modify" class="button" value="#i18n{portal.util.labelModify}" />
+    			<input type="submit" name="cancel" class="button" value="#i18n{portal.util.labelCancel}" />
+    		</p>
+    	</form>
+	</div>
+</div>
