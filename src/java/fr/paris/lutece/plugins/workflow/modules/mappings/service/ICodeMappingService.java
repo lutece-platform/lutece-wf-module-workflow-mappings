@@ -34,7 +34,6 @@
 package fr.paris.lutece.plugins.workflow.modules.mappings.service;
 
 import fr.paris.lutece.plugins.workflow.modules.mappings.business.ICodeMapping;
-import fr.paris.lutece.plugins.workflow.modules.mappings.business.ICodeMappingDAO;
 import fr.paris.lutece.portal.business.workflow.Action;
 import fr.paris.lutece.portal.business.workflow.Workflow;
 import fr.paris.lutece.util.ReferenceList;
@@ -49,12 +48,6 @@ import java.util.List;
  */
 public interface ICodeMappingService
 {
-    /**
-     * Set the code mapping dao
-     * @param codeMappingDAO the code mapping dao
-     */
-    void setCodeMappingDAO( ICodeMappingDAO codeMappingDAO );
-
     // GET
 
     /**

@@ -10,15 +10,12 @@
        http://www.springframework.org/schema/tx
        http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
 
-	<tx:annotation-driven/>
-	
 	<!-- DAO -->
 	<bean id="workflow-mappings.codeMappingDAO" class="fr.paris.lutece.plugins.workflow.modules.mappings.business.CodeMappingDAO" 
 		p:codeMappingFactory-ref="workflow-mappings.codeMappingFactory"/>
 	
 	<!-- Services -->
-	<bean id="workflow-mappings.codeMappingService" class="fr.paris.lutece.plugins.workflow.modules.mappings.service.CodeMappingService" 
-		p:codeMappingDAO-ref="workflow-mappings.codeMappingDAO" />
+	<bean id="workflow-mappings.codeMappingService" class="fr.paris.lutece.plugins.workflow.modules.mappings.service.CodeMappingService" />
 	
 	<!-- Mapping types -->
 	<bean id="workflow-mappings.simpleMappingType" class="fr.paris.lutece.plugins.workflow.modules.mappings.business.type.SimpleMappingType" />

@@ -38,8 +38,8 @@ import fr.paris.lutece.plugins.workflow.business.ActionHome;
 import fr.paris.lutece.plugins.workflow.business.WorkflowFilter;
 import fr.paris.lutece.plugins.workflow.business.WorkflowHome;
 import fr.paris.lutece.plugins.workflow.modules.mappings.business.CodeMappingFilter;
+import fr.paris.lutece.plugins.workflow.modules.mappings.business.CodeMappingHome;
 import fr.paris.lutece.plugins.workflow.modules.mappings.business.ICodeMapping;
-import fr.paris.lutece.plugins.workflow.modules.mappings.business.ICodeMappingDAO;
 import fr.paris.lutece.plugins.workflow.service.WorkflowPlugin;
 import fr.paris.lutece.portal.business.workflow.Action;
 import fr.paris.lutece.portal.business.workflow.Workflow;
@@ -57,16 +57,6 @@ import java.util.List;
  */
 public class CodeMappingService implements ICodeMappingService
 {
-    private ICodeMappingDAO _codeMappingDAO;
-
-    /**
-     * {@inheritDoc}
-     */
-    public void setCodeMappingDAO( ICodeMappingDAO codeMappingDAO )
-    {
-        _codeMappingDAO = codeMappingDAO;
-    }
-
     // GET
 
     /**
@@ -74,7 +64,7 @@ public class CodeMappingService implements ICodeMappingService
      */
     public List<ICodeMapping> getListCodeMappings(  )
     {
-        return _codeMappingDAO.selectAll( getPlugin(  ) );
+        return CodeMappingHome.findAll(  );
     }
 
     /**
@@ -82,7 +72,7 @@ public class CodeMappingService implements ICodeMappingService
      */
     public List<ICodeMapping> getListCodeMappingsByFilter( CodeMappingFilter cmFilter )
     {
-        return _codeMappingDAO.selectByFilter( cmFilter, getPlugin(  ) );
+        return CodeMappingHome.findByFilter( cmFilter );
     }
 
     /**
@@ -90,7 +80,7 @@ public class CodeMappingService implements ICodeMappingService
      */
     public ICodeMapping getCodeMapping( String strCodeToMap, String strMappingTypeKey )
     {
-        return _codeMappingDAO.load( strCodeToMap, strMappingTypeKey, getPlugin(  ) );
+        return CodeMappingHome.findByPrimaryKey( strCodeToMap, strMappingTypeKey );
     }
 
     /**
@@ -177,7 +167,7 @@ public class CodeMappingService implements ICodeMappingService
     {
         if ( codeMapping != null )
         {
-            return _codeMappingDAO.checkCodeMapping( codeMapping, getPlugin(  ) );
+            return CodeMappingHome.checkCodeMapping( codeMapping );
         }
 
         return false;
@@ -192,7 +182,7 @@ public class CodeMappingService implements ICodeMappingService
     {
         if ( codeMapping != null )
         {
-            _codeMappingDAO.update( codeMapping, getPlugin(  ) );
+            CodeMappingHome.update( codeMapping );
         }
     }
 
@@ -201,7 +191,7 @@ public class CodeMappingService implements ICodeMappingService
      */
     public void removeCodeMapping( String strCode, String strMappingTypeKey )
     {
-        _codeMappingDAO.remove( strCode, strMappingTypeKey, getPlugin(  ) );
+        CodeMappingHome.remove( strCode, strMappingTypeKey );
     }
 
     /**
@@ -211,22 +201,11 @@ public class CodeMappingService implements ICodeMappingService
     {
         if ( ( codeMapping != null ) && isCodeMappingValid( codeMapping ) )
         {
-            _codeMappingDAO.insert( codeMapping, getPlugin(  ) );
+            CodeMappingHome.create( codeMapping );
 
             return true;
         }
 
         return false;
-    }
-
-    // PRIVATE METHODS
-
-    /**
-     * Get the plugin
-     * @return the plugin
-     */
-    private Plugin getPlugin(  )
-    {
-        return PluginService.getPlugin( MappingsPlugin.PLUGIN_NAME );
     }
 }
