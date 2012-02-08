@@ -11,7 +11,7 @@
 	<artifactId>module-workflow-mappings</artifactId>
 	<packaging>lutece-plugin</packaging>
 	<version>1.0.0-SNAPSHOT</version>
-	<name>Workflow notify directory module</name>
+	<name>Workflow mappings module</name>
 
 	<repositories>
 		<repository>

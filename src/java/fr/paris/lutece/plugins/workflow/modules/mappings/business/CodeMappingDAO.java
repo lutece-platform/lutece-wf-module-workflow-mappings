@@ -47,17 +47,18 @@ import java.util.List;
  */
 public class CodeMappingDAO implements ICodeMappingDAO
 {
-    private static final String SQL_QUERY_SELECT_BY_CODE_TO_MAP = " SELECT code, label_code, reference_code, mapping_type_key " +
-        " FROM workflow_mappings_code WHERE code = ? AND mapping_type_key = ? ";
-    private static final String SQL_QUERY_SELECT_ALL = " SELECT code, label_code, reference_code, mapping_type_key " +
+    private static final String SQL_QUERY_NEW_PK = " SELECT max( id_code ) FROM workflow_mappings_code ";
+    private static final String SQL_QUERY_SELECT = " SELECT code, label_code, reference_code, mapping_type_key " +
+        " FROM workflow_mappings_code WHERE id_code = ? ";
+    private static final String SQL_QUERY_SELECT_ALL = " SELECT id_code, code, label_code, reference_code, mapping_type_key " +
         " FROM workflow_mappings_code ";
-    private static final String SQL_QUERY_DELETE = " DELETE FROM workflow_mappings_code WHERE code = ? AND mapping_type_key = ? ";
+    private static final String SQL_QUERY_DELETE = " DELETE FROM workflow_mappings_code WHERE id_code = ? ";
     private static final String SQL_QUERY_UPDATE = " UPDATE workflow_mappings_code SET label_code = ?, reference_code = ? " +
-        " WHERE code = ? AND mapping_type_key = ? ";
+        " WHERE id_code = ? ";
     private static final String SQL_QUERY_CHECK_MAPPING = " SELECT code FROM workflow_mappings_code " +
-        " WHERE ( code = ? OR reference_code = ? ) AND mapping_type_key = ?";
-    private static final String SQL_QUERY_INSERT = " INSERT INTO workflow_mappings_code (code, label_code, reference_code, mapping_type_key) " +
-        " VALUES ( ?, ?, ?, ? ) ";
+        " WHERE code = ? AND mapping_type_key = ? ";
+    private static final String SQL_QUERY_INSERT = " INSERT INTO workflow_mappings_code (id_code, code, label_code, reference_code, mapping_type_key) " +
+        " VALUES ( ?, ?, ?, ?, ? ) ";
     private static final String SQL_WHERE = " WHERE ";
     private static final String SQL_AND = " AND ";
     private static final String SQL_OR = " OR ";
@@ -79,10 +80,34 @@ public class CodeMappingDAO implements ICodeMappingDAO
     /**
      * {@inheritDoc}
      */
+    public int newPrimaryKey( Plugin plugin )
+    {
+        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_NEW_PK, plugin );
+        daoUtil.executeQuery(  );
+
+        int nKey = 1;
+
+        if ( daoUtil.next(  ) )
+        {
+            nKey = daoUtil.getInt( 1 ) + 1;
+        }
+
+        daoUtil.free(  );
+
+        return nKey;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public synchronized void insert( ICodeMapping codeMapping, Plugin plugin )
     {
         int nIndex = 1;
+        int nIdCode = newPrimaryKey( plugin );
+        codeMapping.setIdCode( nIdCode );
+
         DAOUtil daoUtil = new DAOUtil( SQL_QUERY_INSERT, plugin );
+        daoUtil.setInt( nIndex++, codeMapping.getIdCode(  ) );
         daoUtil.setString( nIndex++, codeMapping.getCode(  ) );
         daoUtil.setString( nIndex++, codeMapping.getLabelCode(  ) );
         daoUtil.setString( nIndex++, codeMapping.getReferenceCode(  ) );
@@ -95,29 +120,34 @@ public class CodeMappingDAO implements ICodeMappingDAO
     /**
      * {@inheritDoc}
      */
-    public ICodeMapping load( String strCode, String strMappingTypeKey, Plugin plugin )
+    public ICodeMapping load( int nIdCode, Plugin plugin )
     {
-        ICodeMapping mapping = null;
+        ICodeMapping codeMapping = null;
 
         int nIndex = 1;
-        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT_BY_CODE_TO_MAP, plugin );
-        daoUtil.setString( nIndex++, strCode );
-        daoUtil.setString( nIndex++, strMappingTypeKey );
+        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT, plugin );
+        daoUtil.setInt( nIndex++, nIdCode );
         daoUtil.executeQuery(  );
 
         if ( daoUtil.next(  ) )
         {
             nIndex = 1;
 
-            mapping = _codeMappingFactory.newCodeMapping( strMappingTypeKey );
-            mapping.setCode( daoUtil.getString( nIndex++ ) );
-            mapping.setLabelCode( daoUtil.getString( nIndex++ ) );
-            mapping.setReferenceCode( daoUtil.getString( nIndex++ ) );
+            String strCode = daoUtil.getString( nIndex++ );
+            String strLabelCode = daoUtil.getString( nIndex++ );
+            String strReferenceCode = daoUtil.getString( nIndex++ );
+            String strMappingTypeKey = daoUtil.getString( nIndex++ );
+
+            codeMapping = _codeMappingFactory.newCodeMapping( strMappingTypeKey );
+            codeMapping.setIdCode( nIdCode );
+            codeMapping.setCode( strCode );
+            codeMapping.setLabelCode( strLabelCode );
+            codeMapping.setReferenceCode( strReferenceCode );
         }
 
         daoUtil.free(  );
 
-        return mapping;
+        return codeMapping;
     }
 
     /**
@@ -133,17 +163,19 @@ public class CodeMappingDAO implements ICodeMappingDAO
         while ( daoUtil.next(  ) )
         {
             int nIndex = 1;
+            int nIdCode = daoUtil.getInt( nIndex++ );
             String strCode = daoUtil.getString( nIndex++ );
             String strLabelCode = daoUtil.getString( nIndex++ );
             String strRefenreceCode = daoUtil.getString( nIndex++ );
             String strMappingTypeKey = daoUtil.getString( nIndex++ );
 
-            ICodeMapping mapping = _codeMappingFactory.newCodeMapping( strMappingTypeKey );
-            mapping.setCode( strCode );
-            mapping.setLabelCode( strLabelCode );
-            mapping.setReferenceCode( strRefenreceCode );
+            ICodeMapping codeMapping = _codeMappingFactory.newCodeMapping( strMappingTypeKey );
+            codeMapping.setIdCode( nIdCode );
+            codeMapping.setCode( strCode );
+            codeMapping.setLabelCode( strLabelCode );
+            codeMapping.setReferenceCode( strRefenreceCode );
 
-            listMappings.add( mapping );
+            listMappings.add( codeMapping );
         }
 
         daoUtil.free(  );
@@ -154,12 +186,10 @@ public class CodeMappingDAO implements ICodeMappingDAO
     /**
      * {@inheritDoc}
      */
-    public void remove( String strCode, String strMappingTypeKey, Plugin plugin )
+    public void remove( int nIdCode, Plugin plugin )
     {
-        int nIndex = 1;
         DAOUtil daoUtil = new DAOUtil( SQL_QUERY_DELETE, plugin );
-        daoUtil.setString( nIndex++, strCode );
-        daoUtil.setString( nIndex++, strMappingTypeKey );
+        daoUtil.setInt( 1, nIdCode );
         daoUtil.executeUpdate(  );
         daoUtil.free(  );
     }
@@ -174,8 +204,7 @@ public class CodeMappingDAO implements ICodeMappingDAO
         daoUtil.setString( nIndex++, codeMapping.getLabelCode(  ) );
         daoUtil.setString( nIndex++, codeMapping.getReferenceCode(  ) );
 
-        daoUtil.setString( nIndex++, codeMapping.getCode(  ) );
-        daoUtil.setString( nIndex++, codeMapping.getMappingType(  ).getKey(  ) );
+        daoUtil.setInt( nIndex++, codeMapping.getIdCode(  ) );
 
         daoUtil.executeUpdate(  );
         daoUtil.free(  );
@@ -190,7 +219,6 @@ public class CodeMappingDAO implements ICodeMappingDAO
         boolean bIsValid = false;
         DAOUtil daoUtil = new DAOUtil( SQL_QUERY_CHECK_MAPPING, plugin );
         daoUtil.setString( nIndex++, codeMapping.getCode(  ) );
-        daoUtil.setString( nIndex++, codeMapping.getReferenceCode(  ) );
         daoUtil.setString( nIndex++, codeMapping.getMappingType(  ).getKey(  ) );
         daoUtil.executeQuery(  );
 
@@ -219,17 +247,19 @@ public class CodeMappingDAO implements ICodeMappingDAO
         while ( daoUtil.next(  ) )
         {
             int nIndex = 1;
+            int nIdCode = daoUtil.getInt( nIndex++ );
             String strCode = daoUtil.getString( nIndex++ );
             String strLabelCode = daoUtil.getString( nIndex++ );
-            String strRefenreceCode = daoUtil.getString( nIndex++ );
+            String strReferenceCode = daoUtil.getString( nIndex++ );
             String strMappingTypeKey = daoUtil.getString( nIndex++ );
 
-            ICodeMapping mapping = _codeMappingFactory.newCodeMapping( strMappingTypeKey );
-            mapping.setCode( strCode );
-            mapping.setLabelCode( strLabelCode );
-            mapping.setReferenceCode( strRefenreceCode );
+            ICodeMapping codeMapping = _codeMappingFactory.newCodeMapping( strMappingTypeKey );
+            codeMapping.setIdCode( nIdCode );
+            codeMapping.setCode( strCode );
+            codeMapping.setLabelCode( strLabelCode );
+            codeMapping.setReferenceCode( strReferenceCode );
 
-            listCodeMappings.add( mapping );
+            listCodeMappings.add( codeMapping );
         }
 
         daoUtil.free(  );

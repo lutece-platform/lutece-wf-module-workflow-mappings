@@ -78,9 +78,9 @@ public class CodeMappingService implements ICodeMappingService
     /**
      * {@inheritDoc}
      */
-    public ICodeMapping getCodeMapping( String strCodeToMap, String strMappingTypeKey )
+    public ICodeMapping getCodeMapping( int nIdCode )
     {
-        return CodeMappingHome.findByPrimaryKey( strCodeToMap, strMappingTypeKey );
+        return CodeMappingHome.findByPrimaryKey( nIdCode );
     }
 
     /**
@@ -167,7 +167,12 @@ public class CodeMappingService implements ICodeMappingService
     {
         if ( codeMapping != null )
         {
-            return CodeMappingHome.checkCodeMapping( codeMapping );
+            if ( codeMapping.isStrict(  ) )
+            {
+                return CodeMappingHome.checkCodeMapping( codeMapping );
+            }
+
+            return true;
         }
 
         return false;
@@ -189,9 +194,9 @@ public class CodeMappingService implements ICodeMappingService
     /**
      * {@inheritDoc}
      */
-    public void removeCodeMapping( String strCode, String strMappingTypeKey )
+    public void removeCodeMapping( int nIdCode )
     {
-        CodeMappingHome.remove( strCode, strMappingTypeKey );
+        CodeMappingHome.remove( nIdCode );
     }
 
     /**

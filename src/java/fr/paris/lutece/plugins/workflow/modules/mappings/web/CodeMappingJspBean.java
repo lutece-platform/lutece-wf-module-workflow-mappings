@@ -104,6 +104,7 @@ public class CodeMappingJspBean extends PluginAdminPageJspBean
     private static final String PARAMETER_CANCEL = "cancel";
     private static final String PARAMETER_CREATE = "create";
     private static final String PARAMETER_MODIFY = "modify";
+    private static final String PARAMETER_ID_CODE = "idCode";
 
     // TEMPLATES
     private static final String TEMPLATE_MANAGE_CODE_MAPPINGS = "/admin/plugins/workflow/modules/mappings/manage_code_mappings.html";
@@ -195,12 +196,12 @@ public class CodeMappingJspBean extends PluginAdminPageJspBean
     {
         setPageTitleProperty( PROPERTY_CREATE_MAPPING_PAGE_TITLE );
 
-        String strCode = request.getParameter( PARAMETER_CODE );
-        String strMappingTypeKey = request.getParameter( PARAMETER_MAPPING_TYPE_KEY );
+        String strIdCode = request.getParameter( PARAMETER_ID_CODE );
 
-        if ( StringUtils.isNotBlank( strCode ) && StringUtils.isNotBlank( strMappingTypeKey ) )
+        if ( StringUtils.isNotBlank( strIdCode ) && StringUtils.isNumeric( strIdCode ) )
         {
-            ICodeMapping codeMapping = _codeMappingService.getCodeMapping( strCode, strMappingTypeKey );
+            int nIdCode = Integer.parseInt( strIdCode );
+            ICodeMapping codeMapping = _codeMappingService.getCodeMapping( nIdCode );
 
             if ( codeMapping != null )
             {
@@ -208,7 +209,8 @@ public class CodeMappingJspBean extends PluginAdminPageJspBean
                 model.put( MARK_CODE_MAPPING, codeMapping );
                 model.put( MARK_LOCALE, getLocale(  ) );
 
-                IMappingTypeComponent mappingTypeComponent = _codeMappingFactory.getMappingTypeComponent( strMappingTypeKey );
+                IMappingTypeComponent mappingTypeComponent = _codeMappingFactory.getMappingTypeComponent( codeMapping.getMappingType(  )
+                                                                                                                     .getKey(  ) );
 
                 if ( mappingTypeComponent != null )
                 {
@@ -217,8 +219,8 @@ public class CodeMappingJspBean extends PluginAdminPageJspBean
                 }
                 else
                 {
-                    AppLogService.error( CodeMappingJspBean.class.getName(  ) +
-                        " : MappingTypeComponent is null for key '" + strMappingTypeKey + "'" );
+                    AppLogService.error( "CodeMappingJspBean - MappingTypeComponent is null for key '" +
+                        codeMapping.getMappingType(  ).getKey(  ) + "'" );
 
                     String strErrorMessage = I18nService.getLocalizedString( MESSAGE_ERROR_MAPPING_TYPE_COMPONENT_NOT_FOUND,
                             request.getLocale(  ) );
@@ -232,8 +234,7 @@ public class CodeMappingJspBean extends PluginAdminPageJspBean
                 return getAdminPage( template.getHtml(  ) );
             }
 
-            AppLogService.debug( CodeMappingJspBean.class.getName(  ) + " : CodeMapping is null for code '" + strCode +
-                "'" );
+            AppLogService.debug( "CodeMappingJspBean - CodeMapping is null for id code '" + strIdCode + "'" );
 
             String strErrorMessage = I18nService.getLocalizedString( MESSAGE_ERROR_CODE_MAPPING_NOT_FOUND,
                     request.getLocale(  ) );
@@ -253,17 +254,15 @@ public class CodeMappingJspBean extends PluginAdminPageJspBean
      */
     public String getConfirmRemoveCodeMapping( HttpServletRequest request )
     {
-        String strCode = request.getParameter( PARAMETER_CODE );
-        String strMappingTypeKey = request.getParameter( PARAMETER_MAPPING_TYPE_KEY );
+        String strIdCode = request.getParameter( PARAMETER_ID_CODE );
 
-        if ( StringUtils.isBlank( strMappingTypeKey ) || StringUtils.isBlank( strCode ) )
+        if ( StringUtils.isBlank( strIdCode ) || !StringUtils.isNumeric( strIdCode ) )
         {
             return AdminMessageService.getMessageUrl( request, Messages.MANDATORY_FIELDS, AdminMessage.TYPE_STOP );
         }
 
         UrlItem url = new UrlItem( JSP_URL_DO_REMOVE_CODE_MAPPING );
-        url.addParameter( PARAMETER_CODE, strCode );
-        url.addParameter( PARAMETER_MAPPING_TYPE_KEY, strMappingTypeKey );
+        url.addParameter( PARAMETER_ID_CODE, strIdCode );
 
         return AdminMessageService.getMessageUrl( request, MESSAGE_CONFIRM_REMOVE_CODE_MAPPING, url.getUrl(  ),
             AdminMessage.TYPE_CONFIRMATION );
@@ -329,6 +328,7 @@ public class CodeMappingJspBean extends PluginAdminPageJspBean
 
         String strCreate = request.getParameter( PARAMETER_CREATE );
 
+        // Only modify the code mapping if the user has clicked on the submit button "create"
         if ( StringUtils.isBlank( strCreate ) )
         {
             IMappingTypeComponent mappingTypeComponent = _codeMappingFactory.getMappingTypeComponent( strMappingTypeKey );
@@ -383,15 +383,17 @@ public class CodeMappingJspBean extends PluginAdminPageJspBean
         }
 
         String strMappingTypeKey = request.getParameter( PARAMETER_MAPPING_TYPE_KEY );
-        String strCode = request.getParameter( PARAMETER_CODE );
+        String strIdCode = request.getParameter( PARAMETER_ID_CODE );
 
-        if ( StringUtils.isBlank( strMappingTypeKey ) || StringUtils.isBlank( strCode ) )
+        if ( StringUtils.isBlank( strMappingTypeKey ) || StringUtils.isBlank( strIdCode ) ||
+                !StringUtils.isNumeric( strIdCode ) )
         {
             return AdminMessageService.getMessageUrl( request, Messages.MANDATORY_FIELDS, AdminMessage.TYPE_STOP );
         }
 
         String strModify = request.getParameter( PARAMETER_MODIFY );
 
+        // Only modify the code mapping if the user has clicked on the submit button "modify"
         if ( StringUtils.isBlank( strModify ) )
         {
             IMappingTypeComponent mappingTypeComponent = _codeMappingFactory.getMappingTypeComponent( strMappingTypeKey );
@@ -411,7 +413,8 @@ public class CodeMappingJspBean extends PluginAdminPageJspBean
             }
         }
 
-        ICodeMapping codeMapping = _codeMappingService.getCodeMapping( strCode, strMappingTypeKey );
+        int nIdCode = Integer.parseInt( strIdCode );
+        ICodeMapping codeMapping = _codeMappingService.getCodeMapping( nIdCode );
 
         if ( codeMapping == null )
         {
@@ -442,15 +445,16 @@ public class CodeMappingJspBean extends PluginAdminPageJspBean
      */
     public String doRemoveCodeMapping( HttpServletRequest request )
     {
-        String strCode = request.getParameter( PARAMETER_CODE );
-        String strMappingTypeKey = request.getParameter( PARAMETER_MAPPING_TYPE_KEY );
+        String strIdCode = request.getParameter( PARAMETER_ID_CODE );
 
-        if ( StringUtils.isBlank( strMappingTypeKey ) || StringUtils.isBlank( strCode ) )
+        if ( StringUtils.isBlank( strIdCode ) || !StringUtils.isNumeric( strIdCode ) )
         {
             return AdminMessageService.getMessageUrl( request, Messages.MANDATORY_FIELDS, AdminMessage.TYPE_STOP );
         }
 
-        _codeMappingService.removeCodeMapping( strCode, strMappingTypeKey );
+        int nIdCode = Integer.parseInt( strIdCode );
+
+        _codeMappingService.removeCodeMapping( nIdCode );
 
         return JSP_MANAGE_CODE_MAPPINGS;
     }

@@ -21,14 +21,18 @@
 	<bean id="workflow-mappings.simpleMappingType" class="fr.paris.lutece.plugins.workflow.modules.mappings.business.type.SimpleMappingType" />
 	<bean id="workflow-mappings.actionMappingType" class="fr.paris.lutece.plugins.workflow.modules.mappings.business.type.ActionMappingType" />
 	<bean id="workflow-mappings.simpleMapping" class="fr.paris.lutece.plugins.workflow.modules.mappings.business.SimpleCodeMapping" scope="prototype" 
-		p:mappingType-ref="workflow-mappings.simpleMappingType" />
+		p:mappingType-ref="workflow-mappings.simpleMappingType" 
+		p:strict="true" />
 	<bean id="workflow-mappings.actionMapping" class="fr.paris.lutece.plugins.workflow.modules.mappings.business.ActionCodeMapping" scope="prototype" 
-		p:mappingType-ref="workflow-mappings.actionMappingType" p:codeMappingService-ref="workflow-mappings.codeMappingService" />
+		p:mappingType-ref="workflow-mappings.actionMappingType"
+		p:codeMappingService-ref="workflow-mappings.codeMappingService" 
+		p:strict="false" />
 	
  	<!-- Mapping type components -->
  	<bean id="workflow-mappings.simpleMappingTypeComponent" class="fr.paris.lutece.plugins.workflow.modules.mappings.web.component.SimpleMappingTypeComponent" 
 		p:mappingType-ref="workflow-mappings.simpleMappingType" />
 	<bean id="workflow-mappings.actionMappingTypeComponent" class="fr.paris.lutece.plugins.workflow.modules.mappings.web.component.ActionMappingTypeComponent"
-		p:mappingType-ref="workflow-mappings.actionMappingType" p:codeMappingService-ref="workflow-mappings.codeMappingService" />
+		p:mappingType-ref="workflow-mappings.actionMappingType"
+		p:codeMappingService-ref="workflow-mappings.codeMappingService" />
 	<bean id="workflow-mappings.codeMappingFactory" class="fr.paris.lutece.plugins.workflow.modules.mappings.business.CodeMappingFactory" />
 </beans>

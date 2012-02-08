@@ -9,6 +9,13 @@
 				Ce module permet de g&#233;rer dynamiquement des mappings entre des codes et
 				les ressources du plugin-workflow.
 			</subsection>
+			<subsction name="Fonction">
+				<p>Il existe 2 types de mappings :</p>
+				<ul>
+					<li>Mapping simple : permet de faire un mapping entre 2 chaine de caract&#232;res</li>
+					<li>Mapping sur les actions de workflow : permet de faire un mapping entre une chaine de caract&#232;re et une action de workflow</li>
+				</ul>
+			</subsction>
 		</section>
 	</body>
 </document>

@@ -47,6 +47,18 @@ import java.util.Locale;
 public interface ICodeMapping
 {
     /**
+     * Get the id code
+     * @return the id code
+     */
+    int getIdCode(  );
+
+    /**
+     * Set the id code
+     * @param nIdCode the id code
+     */
+    void setIdCode( int nIdCode );
+
+    /**
      * Get the code
      * @return the code
      */
@@ -100,4 +112,20 @@ public interface ICodeMapping
      * @param mappingType the mapping type
      */
     void setMappingType( IMappingType mappingType );
+
+    /**
+     * Check if the code mapping is in strict mode.
+     * @return true if the code mapping is in strict mode, false otherwise
+     */
+    boolean isStrict(  );
+
+    /**
+     * In strict mode, the reference code must be UNIQUE along with the code and
+     * the mapping type key. In other words, when creating/modifying a code mapping,
+     * the strict mode will ensure that the code is UNIQUE.
+     * <br />
+     * The mode is strict by default ({@link #isStrict()} == true)
+     * @param bIsStrict true if the code mapping is in strict mode, false otherwise
+     */
+    void setStrict( boolean bIsStrict );
 }

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+	<properties>
+		<title>Configuration</title>
+	</properties>
+	<body>
+		<section name="Configuration">
+			<subsection name="Strict mode">
+				<p>
+					It is possible to define a <strong>strict</strong> mode for a mapping type.
+					The strict mode is about rendering the code UNIQUE. In other words, it will not be
+					possible to create a mapping that has an existing code for a mapping type.
+				</p>
+				<p>
+					By default, the simple mapping is in strict mode whereas the mapping with workflow actions is not.
+				</p>
+				<p>
+					To configure the strict mode for mapping types, one must modify the following file :
+					<strong>/WEB-INF/conf/plugins/workflow-mappings_context.xml :</strong>
+				</p>
+				<div class="source">
+<pre>
+&lt;bean id="workflow-mappings.simpleMapping" class="fr.paris.lutece.plugins.workflow.modules.mappings.business.SimpleCodeMapping" scope="prototype" 
+	p:mappingType-ref="workflow-mappings.simpleMappingType" 
+	p:strict="<strong>true</strong>" /&gt;
+&lt;bean id="workflow-mappings.actionMapping" class="fr.paris.lutece.plugins.workflow.modules.mappings.business.ActionCodeMapping" scope="prototype" 
+	p:mappingType-ref="workflow-mappings.actionMappingType"
+	p:codeMappingService-ref="workflow-mappings.codeMappingService" 
+	p:strict="<strong>false</strong>" /&gt;
+</pre>
+				</div>
+			</subsection>
+		</section>
+	</body>
+</document>

@@ -45,16 +45,34 @@ import org.hibernate.validator.constraints.NotBlank;
  */
 public abstract class AbstractCodeMapping implements ICodeMapping
 {
+    private int _nIdCode;
     @NotBlank
     private String _strCode;
     private String _strLabelCode;
     @NotBlank
     private String _strReferenceCode;
     private IMappingType _mappingType;
+    private boolean _bIsStrict = true;
 
     /**
      * {@inheritDoc}
      */
+    public void setIdCode( int nIdCode )
+    {
+        this._nIdCode = nIdCode;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public int getIdCode(  )
+    {
+        return _nIdCode;
+    }
+
+    /**
+    * {@inheritDoc}
+    */
     public String getCode(  )
     {
         return _strCode;
@@ -114,5 +132,21 @@ public abstract class AbstractCodeMapping implements ICodeMapping
     public IMappingType getMappingType(  )
     {
         return _mappingType;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public void setStrict( boolean bIsStrict )
+    {
+        this._bIsStrict = bIsStrict;
+    }
+
+    /**
+    * {@inheritDoc}
+    */
+    public boolean isStrict(  )
+    {
+        return _bIsStrict;
     }
 }

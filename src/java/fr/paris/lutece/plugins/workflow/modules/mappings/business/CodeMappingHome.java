@@ -61,13 +61,12 @@ public final class CodeMappingHome
 
     /**
     * Load the code mapping
-    * @param strCode the code
-    * @param strMappingTypeKey the mapping type key
+    * @param nIdCode the id code
     * @return an instance of {@link ICodeMapping}
     */
-    public static ICodeMapping findByPrimaryKey( String strCode, String strMappingTypeKey )
+    public static ICodeMapping findByPrimaryKey( int nIdCode )
     {
-        return _dao.load( strCode, strMappingTypeKey, _plugin );
+        return _dao.load( nIdCode, _plugin );
     }
 
     /**
@@ -100,12 +99,11 @@ public final class CodeMappingHome
 
     /**
      * Remove a code mapping
-     * @param strCode the code
-     * @param strMappingTypeKey the mapping type key
+     * @param nIdCode the id code
      */
-    public static void remove( String strCode, String strMappingTypeKey )
+    public static void remove( int nIdCode )
     {
-        _dao.remove( strCode, strMappingTypeKey, _plugin );
+        _dao.remove( nIdCode, _plugin );
     }
 
     /**

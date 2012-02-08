@@ -22,10 +22,10 @@
 	    				<td>${codeMapping.getLabelReferenceCode( locale )!}</td>
 	    				<td>${codeMapping.mappingType.getLabel( locale )!}</td>
 	    				<td>
-	    					<a href="jsp/admin/plugins/workflow/modules/mappings/ModifyCodeMapping.jsp?code=${codeMapping.code!}&amp;mappingTypeKey=${codeMapping.mappingType.key!}">
+	    					<a href="jsp/admin/plugins/workflow/modules/mappings/ModifyCodeMapping.jsp?idCode=${codeMapping.idCode!}">
 				        		<img src="images/admin/skin/actions/modify.png" alt="#i18n{portal.util.labelModify}" title="#i18n{portal.util.labelModify}" />
 				        	</a>
-				            <a href="jsp/admin/plugins/workflow/modules/mappings/RemoveCodeMapping.jsp?code=${codeMapping.code!}&amp;mappingTypeKey=${codeMapping.mappingType.key!}" >
+				            <a href="jsp/admin/plugins/workflow/modules/mappings/RemoveCodeMapping.jsp?idCode=${codeMapping.idCode!}" >
 				                <img src="images/admin/skin/actions/delete.png" alt="#i18n{portal.util.labelDelete}" title="#i18n{portal.util.labelDelete}" />
 				            </a>
 	    				</td>

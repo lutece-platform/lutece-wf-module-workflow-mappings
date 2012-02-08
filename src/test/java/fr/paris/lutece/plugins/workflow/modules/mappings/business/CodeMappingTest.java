@@ -76,8 +76,8 @@ public class CodeMappingTest extends LuteceTestCase
         Plugin plugin = PluginService.getPlugin( MappingsPlugin.PLUGIN_NAME );
         dao.insert( codeMapping, plugin );
 
-        ICodeMapping codeMappingStored = dao.load( codeMapping.getCode(  ), codeMapping.getMappingType(  ).getKey(  ),
-                plugin );
+        ICodeMapping codeMappingStored = dao.load( codeMapping.getIdCode(  ), plugin );
+        assertEquals( codeMapping.getIdCode(  ), codeMappingStored.getIdCode(  ) );
         assertEquals( codeMapping.getCode(  ), codeMappingStored.getCode(  ) );
         assertEquals( codeMapping.getLabelCode(  ), codeMappingStored.getLabelCode(  ) );
         assertEquals( codeMapping.getReferenceCode(  ), codeMappingStored.getReferenceCode(  ) );
@@ -86,7 +86,7 @@ public class CodeMappingTest extends LuteceTestCase
         codeMapping.setLabelCode( LABEL_CODE2 );
         codeMapping.setReferenceCode( REFERENCE_CODE2 );
         dao.update( codeMapping, plugin );
-        codeMappingStored = dao.load( codeMapping.getCode(  ), codeMapping.getMappingType(  ).getKey(  ), plugin );
+        codeMappingStored = dao.load( codeMapping.getIdCode(  ), plugin );
         assertEquals( codeMapping.getCode(  ), codeMappingStored.getCode(  ) );
         assertEquals( codeMapping.getLabelCode(  ), codeMappingStored.getLabelCode(  ) );
         assertEquals( codeMapping.getReferenceCode(  ), codeMappingStored.getReferenceCode(  ) );
@@ -98,8 +98,8 @@ public class CodeMappingTest extends LuteceTestCase
         dao.selectAll( plugin );
 
         // Test remove
-        dao.remove( codeMapping.getCode(  ), codeMapping.getMappingType(  ).getKey(  ), plugin );
-        codeMappingStored = dao.load( codeMapping.getCode(  ), codeMapping.getMappingType(  ).getKey(  ), plugin );
+        dao.remove( codeMapping.getIdCode(  ), plugin );
+        codeMappingStored = dao.load( codeMapping.getIdCode(  ), plugin );
         assertNull( codeMappingStored );
     }
 }

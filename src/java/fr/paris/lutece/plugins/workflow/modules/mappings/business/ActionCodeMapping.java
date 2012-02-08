@@ -35,6 +35,7 @@ package fr.paris.lutece.plugins.workflow.modules.mappings.business;
 
 import fr.paris.lutece.plugins.workflow.modules.mappings.service.ICodeMappingService;
 import fr.paris.lutece.portal.business.workflow.Action;
+import fr.paris.lutece.portal.service.util.AppLogService;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -48,6 +49,7 @@ import java.util.Locale;
  */
 public class ActionCodeMapping extends AbstractCodeMapping
 {
+    /** Position of the id action in the reference code */
     private ICodeMappingService _codeMappingService;
 
     /**
@@ -73,6 +75,10 @@ public class ActionCodeMapping extends AbstractCodeMapping
             {
                 return action.getName(  );
             }
+        }
+        else
+        {
+            AppLogService.error( "ActionCodeMapping - The reference code '" + getReferenceCode(  ) + "' is invalid." );
         }
 
         return getReferenceCode(  );

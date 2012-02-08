@@ -46,13 +46,19 @@ import java.util.List;
 public interface ICodeMappingDAO
 {
     /**
+     * Get new primary key
+     * @param plugin the plugin
+     * @return a new primary key
+     */
+    int newPrimaryKey( Plugin plugin );
+
+    /**
      * Load the code mapping
-     * @param strCode the code
-     * @param strMappingTypeKey the mapping type key
+     * @param nIdCode the id code
      * @param plugin the plugin
      * @return an instance of {@link ICodeMapping}
      */
-    ICodeMapping load( String strCode, String strMappingTypeKey, Plugin plugin );
+    ICodeMapping load( int nIdCode, Plugin plugin );
 
     /**
      * Select all code mappings
@@ -78,11 +84,10 @@ public interface ICodeMappingDAO
 
     /**
      * Remove a code mapping
-     * @param strCode the code
-     * @param strMappingTypeKey the mapping type key
+     * @param nCode the id code
      * @param plugin the plugin
      */
-    void remove( String strCode, String strMappingTypeKey, Plugin plugin );
+    void remove( int nCode, Plugin plugin );
 
     /**
      * Update a code mapping

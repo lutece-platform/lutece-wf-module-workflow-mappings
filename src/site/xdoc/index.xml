@@ -9,6 +9,13 @@
 				This module handles the dynamical management between codes and resources
 				of the plugin-workflow.
 			</subsection>
+			<subsction name="Fonction">
+				<p>There are 2 mapping types :</p>
+				<ul>
+					<li>Simple mapping : enable a mapping between 2 Strings</li>
+					<li>Mapping with workflow actions : enable a mapping between a String and a workflow action</li>
+				</ul>
+			</subsction>
 		</section>
 	</body>
 </document>

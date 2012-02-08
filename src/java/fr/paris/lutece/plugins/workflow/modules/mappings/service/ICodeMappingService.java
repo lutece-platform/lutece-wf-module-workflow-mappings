@@ -58,11 +58,10 @@ public interface ICodeMappingService
 
     /**
      * Get the {@link ICodeMapping}
-     * @param strCode the code
-     * @param strMappingTypeKey the mapping type key
+     * @param nIdCode the id code
      * @return a {@link ICodeMapping}
      */
-    ICodeMapping getCodeMapping( String strCode, String strMappingTypeKey );
+    ICodeMapping getCodeMapping( int nIdCode );
 
     /**
      * Get the workflow action
@@ -111,10 +110,9 @@ public interface ICodeMappingService
 
     /**
      * Remove the code mapping
-     * @param strCode the code
-     * @param strMappingTypeKey the mapping type key
+     * @param nIdCode the id code
      */
-    void removeCodeMapping( String strCode, String strMappingTypeKey );
+    void removeCodeMapping( int nIdCode );
 
     /**
      * Create a code mapping
