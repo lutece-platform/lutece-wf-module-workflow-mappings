@@ -35,6 +35,7 @@ package fr.paris.lutece.plugins.workflow.modules.mappings.business;
 
 import fr.paris.lutece.plugins.workflow.modules.mappings.service.ICodeMappingService;
 import fr.paris.lutece.portal.business.workflow.Action;
+import fr.paris.lutece.portal.business.workflow.Workflow;
 import fr.paris.lutece.portal.service.util.AppLogService;
 
 import org.apache.commons.lang.StringUtils;
@@ -73,7 +74,21 @@ public class ActionCodeMapping extends AbstractCodeMapping
 
             if ( action != null )
             {
-                return action.getName(  );
+                Workflow workflow = _codeMappingService.getWorkflow( action.getWorkflow(  ).getId(  ) );
+
+                if ( workflow != null )
+                {
+                    return workflow.getName(  ) + " - " + action.getName(  );
+                }
+                else
+                {
+                    AppLogService.error( "ActionCodeMapping - The workflow is not found for id workflow " +
+                        action.getWorkflow(  ).getId(  ) );
+                }
+            }
+            else
+            {
+                AppLogService.error( "ActionCodeMapping - The action is not found for id action " + nIdAction );
             }
         }
         else
