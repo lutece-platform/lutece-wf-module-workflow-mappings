@@ -20,4 +20,16 @@
 	<!-- if the plugin must have a connection pool with parameter : 1 - yes, 0 - no -->	
     <db-pool-required>1</db-pool-required>
     
+    <!--Administration interface parameters -->
+    <admin-features>
+        <admin-feature>
+            <feature-id>WORKFLOW_MAPPINGS_MANAGEMENT</feature-id>
+            <feature-title>module.workflow.mappings.adminFeature.workflowMappingsManagement.name</feature-title>
+            <feature-description>module.workflow.mappings.adminFeature.workflowMappingsManagement.description</feature-description>
+            <feature-level>0</feature-level>
+            <feature-url>jsp/admin/plugins/workflow/modules/mappings/ManageCodeMappings.jsp</feature-url>
+            <feature-icon-url>images/admin/skin/plugins/workflow/modules/mappings/mappings.png</feature-icon-url>
+            <feature-documentation-url></feature-documentation-url>
+        </admin-feature>
+    </admin-features>
 </plug-in>
