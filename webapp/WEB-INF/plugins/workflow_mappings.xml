@@ -29,7 +29,7 @@
             <feature-level>0</feature-level>
             <feature-url>jsp/admin/plugins/workflow/modules/mappings/ManageCodeMappings.jsp</feature-url>
             <feature-icon-url>images/admin/skin/plugins/workflow/modules/mappings/mappings.png</feature-icon-url>
-            <feature-documentation-url></feature-documentation-url>
+            <feature-documentation-url/>
         </admin-feature>
     </admin-features>
 </plug-in>
