@@ -10,9 +10,13 @@
        http://www.springframework.org/schema/tx
        http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
 
+	<!-- Transaction Manager -->
+	<bean id="workflow-mappings.transactionManager" class="fr.paris.lutece.portal.service.database.DAOUtilTransactionManager">
+		<property name="pluginName" value="workflow-mappings" />
+	</bean>
+	
 	<!-- DAO -->
-	<bean id="workflow-mappings.codeMappingDAO" class="fr.paris.lutece.plugins.workflow.modules.mappings.business.CodeMappingDAO" 
-		p:codeMappingFactory-ref="workflow-mappings.codeMappingFactory"/>
+	<bean id="workflow-mappings.codeMappingDAO" class="fr.paris.lutece.plugins.workflow.modules.mappings.business.CodeMappingDAO" />
 	
 	<!-- Services -->
 	<bean id="workflow-mappings.codeMappingService" class="fr.paris.lutece.plugins.workflow.modules.mappings.service.CodeMappingService" />
@@ -24,15 +28,13 @@
 		p:mappingType-ref="workflow-mappings.simpleMappingType" 
 		p:strict="true" />
 	<bean id="workflow-mappings.actionMapping" class="fr.paris.lutece.plugins.workflow.modules.mappings.business.ActionCodeMapping" scope="prototype" 
-		p:mappingType-ref="workflow-mappings.actionMappingType"
-		p:codeMappingService-ref="workflow-mappings.codeMappingService" 
+		p:mappingType-ref="workflow-mappings.actionMappingType" 
 		p:strict="false" />
 	
  	<!-- Mapping type components -->
  	<bean id="workflow-mappings.simpleMappingTypeComponent" class="fr.paris.lutece.plugins.workflow.modules.mappings.web.component.SimpleMappingTypeComponent" 
 		p:mappingType-ref="workflow-mappings.simpleMappingType" />
 	<bean id="workflow-mappings.actionMappingTypeComponent" class="fr.paris.lutece.plugins.workflow.modules.mappings.web.component.ActionMappingTypeComponent"
-		p:mappingType-ref="workflow-mappings.actionMappingType"
-		p:codeMappingService-ref="workflow-mappings.codeMappingService" />
+		p:mappingType-ref="workflow-mappings.actionMappingType" />
 	<bean id="workflow-mappings.codeMappingFactory" class="fr.paris.lutece.plugins.workflow.modules.mappings.business.CodeMappingFactory" />
 </beans>

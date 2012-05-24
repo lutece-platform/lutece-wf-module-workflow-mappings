@@ -61,22 +61,22 @@ import java.util.Map;
  * </ul>
  *
  */
-public class CodeMappingFactory
+public class CodeMappingFactory implements ICodeMappingFactory
 {
+    public static final String BEAN_FACTORY = "workflow-mappings.codeMappingFactory";
     private Map<String, IMappingTypeComponent> _mapMappingTypeComponents;
 
     /**
-     * Create a new instance of {@link ICodeMapping}
-     * @param strMappingTypeKey the mapping type key
-     * @return a new instance of {@link ICodeMapping}
+     * {@inheritDoc}
      */
+    @Override
     public ICodeMapping newCodeMapping( String strMappingTypeKey )
     {
         ICodeMapping codeMapping = null;
 
         try
         {
-            codeMapping = (ICodeMapping) SpringContextService.getBean( strMappingTypeKey );
+            codeMapping = SpringContextService.getBean( strMappingTypeKey );
         }
         catch ( BeanDefinitionStoreException e )
         {
@@ -104,9 +104,9 @@ public class CodeMappingFactory
     }
 
     /**
-     * Get the {@link IMappingTypeComponent}
-     * @return a map of (mapping_type_key, {@link IMappingTypeComponent}
+     * {@inheritDoc}
      */
+    @Override
     public Map<String, IMappingTypeComponent> getMappingTypeComponents(  )
     {
         if ( _mapMappingTypeComponents == null )
@@ -118,10 +118,9 @@ public class CodeMappingFactory
     }
 
     /**
-     * Get the {@link IMappingTypeComponent} type
-     * @param strMappingTypeKey the mapping type key
-     * @return a {@link IMappingTypeComponent}
+     * {@inheritDoc}
      */
+    @Override
     public IMappingTypeComponent getMappingTypeComponent( String strMappingTypeKey )
     {
         if ( _mapMappingTypeComponents == null )
@@ -133,10 +132,9 @@ public class CodeMappingFactory
     }
 
     /**
-     * Get the mapping type
-     * @param strMappingTypeKey the mapping type key
-     * @return a {@link IMappingType}
+     * {@inheritDoc}
      */
+    @Override
     public IMappingType getMappingType( String strMappingTypeKey )
     {
         IMappingTypeComponent mappingTypeComponent = getMappingTypeComponent( strMappingTypeKey );
@@ -150,10 +148,9 @@ public class CodeMappingFactory
     }
 
     /**
-     * Get the list of mapping types
-     * @param locale the locale
-     * @return a {@link ReferenceList}
+     * {@inheritDoc}
      */
+    @Override
     public ReferenceList getListMappingTypes( Locale locale )
     {
         ReferenceList listMappingTypes = new ReferenceList(  );

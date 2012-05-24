@@ -36,8 +36,10 @@ package fr.paris.lutece.plugins.workflow.modules.mappings.web.component;
 import fr.paris.lutece.plugins.workflow.modules.mappings.business.ICodeMapping;
 import fr.paris.lutece.plugins.workflow.modules.mappings.service.ICodeMappingService;
 import fr.paris.lutece.plugins.workflow.utils.WorkflowUtils;
-import fr.paris.lutece.portal.business.workflow.Action;
-import fr.paris.lutece.portal.business.workflow.Workflow;
+import fr.paris.lutece.plugins.workflowcore.business.action.Action;
+import fr.paris.lutece.plugins.workflowcore.business.workflow.Workflow;
+import fr.paris.lutece.plugins.workflowcore.service.action.IActionService;
+import fr.paris.lutece.plugins.workflowcore.service.workflow.IWorkflowService;
 import fr.paris.lutece.portal.service.template.AppTemplateService;
 import fr.paris.lutece.util.ReferenceList;
 import fr.paris.lutece.util.html.HtmlTemplate;
@@ -48,6 +50,8 @@ import org.apache.commons.lang.StringUtils;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+
+import javax.inject.Inject;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -72,20 +76,19 @@ public class ActionMappingTypeComponent extends AbstractMappingTypeComponent
     // TEMPLATES
     private static final String TEMPLATE_CREATE_MAPPING = "/admin/plugins/workflow/modules/mappings/action_mapping/create_action_code_mapping.html";
     private static final String TEMPLATE_MODIFY_MAPPING = "/admin/plugins/workflow/modules/mappings/action_mapping/modify_action_code_mapping.html";
-    private ICodeMappingService _codeMappingService;
 
-    /**
-     * Set the code mapping service
-     * @param codeMappingService the code mapping service
-     */
-    public void setCodeMappingService( ICodeMappingService codeMappingService )
-    {
-        _codeMappingService = codeMappingService;
-    }
+    // SERVICES
+    @Inject
+    private ICodeMappingService _codeMappingService;
+    @Inject
+    private IActionService _actionService;
+    @Inject
+    private IWorkflowService _workflowService;
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getCreateCodeMappingHtml( HttpServletRequest request, Locale locale )
     {
         Map<String, Object> model = new HashMap<String, Object>(  );
@@ -95,7 +98,7 @@ public class ActionMappingTypeComponent extends AbstractMappingTypeComponent
         if ( StringUtils.isNotBlank( strIdWorkflow ) && StringUtils.isNumeric( strIdWorkflow ) )
         {
             int nIdWorkflow = Integer.parseInt( strIdWorkflow );
-            workflow = _codeMappingService.getWorkflow( nIdWorkflow );
+            workflow = _workflowService.findByPrimaryKey( nIdWorkflow );
 
             if ( workflow != null )
             {
@@ -115,6 +118,7 @@ public class ActionMappingTypeComponent extends AbstractMappingTypeComponent
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getModifyCodeMappingHtml( ICodeMapping codeMapping, HttpServletRequest request, Locale locale )
     {
         Map<String, Object> model = new HashMap<String, Object>(  );
@@ -130,7 +134,7 @@ public class ActionMappingTypeComponent extends AbstractMappingTypeComponent
                 StringUtils.isNumeric( codeMapping.getReferenceCode(  ) ) )
         {
             int nIdAction = Integer.parseInt( codeMapping.getReferenceCode(  ) );
-            action = _codeMappingService.getAction( nIdAction );
+            action = _actionService.findByPrimaryKey( nIdAction );
 
             if ( action != null )
             {
@@ -138,7 +142,7 @@ public class ActionMappingTypeComponent extends AbstractMappingTypeComponent
             }
         }
 
-        Workflow workflow = _codeMappingService.getWorkflow( nIdWorkflow );
+        Workflow workflow = _workflowService.findByPrimaryKey( nIdWorkflow );
 
         if ( workflow != null )
         {
@@ -164,6 +168,7 @@ public class ActionMappingTypeComponent extends AbstractMappingTypeComponent
     /**
      * {@inheritDoc}
      */
+    @Override
     public void addParameter( HttpServletRequest request, UrlItem url )
     {
         super.addParameter( request, url );

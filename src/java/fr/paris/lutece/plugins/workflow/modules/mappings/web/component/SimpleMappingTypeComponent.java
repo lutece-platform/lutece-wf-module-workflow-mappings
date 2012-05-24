@@ -61,6 +61,7 @@ public class SimpleMappingTypeComponent extends AbstractMappingTypeComponent
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getCreateCodeMappingHtml( HttpServletRequest request, Locale locale )
     {
         HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_CREATE_MAPPING, locale );
@@ -71,6 +72,7 @@ public class SimpleMappingTypeComponent extends AbstractMappingTypeComponent
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getModifyCodeMappingHtml( ICodeMapping codeMapping, HttpServletRequest request, Locale locale )
     {
         Map<String, Object> model = new HashMap<String, Object>(  );

@@ -33,21 +33,23 @@
  */
 package fr.paris.lutece.plugins.workflow.modules.mappings.service;
 
-import fr.paris.lutece.plugins.workflow.business.ActionFilter;
-import fr.paris.lutece.plugins.workflow.business.ActionHome;
-import fr.paris.lutece.plugins.workflow.business.WorkflowFilter;
-import fr.paris.lutece.plugins.workflow.business.WorkflowHome;
 import fr.paris.lutece.plugins.workflow.modules.mappings.business.CodeMappingFilter;
-import fr.paris.lutece.plugins.workflow.modules.mappings.business.CodeMappingHome;
 import fr.paris.lutece.plugins.workflow.modules.mappings.business.ICodeMapping;
-import fr.paris.lutece.plugins.workflow.service.WorkflowPlugin;
-import fr.paris.lutece.portal.business.workflow.Action;
-import fr.paris.lutece.portal.business.workflow.Workflow;
-import fr.paris.lutece.portal.service.plugin.Plugin;
+import fr.paris.lutece.plugins.workflow.modules.mappings.business.ICodeMappingDAO;
+import fr.paris.lutece.plugins.workflowcore.business.action.Action;
+import fr.paris.lutece.plugins.workflowcore.business.action.ActionFilter;
+import fr.paris.lutece.plugins.workflowcore.business.workflow.Workflow;
+import fr.paris.lutece.plugins.workflowcore.business.workflow.WorkflowFilter;
+import fr.paris.lutece.plugins.workflowcore.service.action.IActionService;
+import fr.paris.lutece.plugins.workflowcore.service.workflow.IWorkflowService;
 import fr.paris.lutece.portal.service.plugin.PluginService;
 import fr.paris.lutece.util.ReferenceList;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
+
+import javax.inject.Inject;
 
 
 /**
@@ -57,51 +59,92 @@ import java.util.List;
  */
 public class CodeMappingService implements ICodeMappingService
 {
+    public static final String BEAN_SERVICE = "workflow-mappings.codeMappingService";
+    @Inject
+    private ICodeMappingDAO _codeMappingDAO;
+    @Inject
+    private IActionService _actionService;
+    @Inject
+    private IWorkflowService _workflowService;
+
+    /**
+    * {@inheritDoc}
+    */
+    @Override
+    @Transactional( "workflow-mappings.transactionManager" )
+    public void updateCodeMapping( ICodeMapping codeMapping )
+    {
+        if ( codeMapping != null )
+        {
+            _codeMappingDAO.update( codeMapping, PluginService.getPlugin( MappingsPlugin.PLUGIN_NAME ) );
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional( "workflow-mappings.transactionManager" )
+    public void removeCodeMapping( int nIdCode )
+    {
+        _codeMappingDAO.remove( nIdCode, PluginService.getPlugin( MappingsPlugin.PLUGIN_NAME ) );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    @Transactional( "workflow-mappings.transactionManager" )
+    public boolean createCodeMapping( ICodeMapping codeMapping )
+    {
+        if ( ( codeMapping != null ) && isCodeMappingValid( codeMapping ) )
+        {
+            _codeMappingDAO.insert( codeMapping, PluginService.getPlugin( MappingsPlugin.PLUGIN_NAME ) );
+
+            return true;
+        }
+
+        return false;
+    }
+
     // GET
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<ICodeMapping> getListCodeMappings(  )
     {
-        return CodeMappingHome.findAll(  );
+        return _codeMappingDAO.selectAll( PluginService.getPlugin( MappingsPlugin.PLUGIN_NAME ) );
     }
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<ICodeMapping> getListCodeMappingsByFilter( CodeMappingFilter cmFilter )
     {
-        return CodeMappingHome.findByFilter( cmFilter );
+        return _codeMappingDAO.selectByFilter( cmFilter, PluginService.getPlugin( MappingsPlugin.PLUGIN_NAME ) );
     }
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public ICodeMapping getCodeMapping( int nIdCode )
     {
-        return CodeMappingHome.findByPrimaryKey( nIdCode );
+        return _codeMappingDAO.load( nIdCode, PluginService.getPlugin( MappingsPlugin.PLUGIN_NAME ) );
     }
 
     /**
      * {@inheritDoc}
      */
-    public Workflow getWorkflow( int nIdWorkflow )
-    {
-        Plugin pluginWorkflow = PluginService.getPlugin( WorkflowPlugin.PLUGIN_NAME );
-
-        return WorkflowHome.findByPrimaryKey( nIdWorkflow, pluginWorkflow );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public ReferenceList getListWorkflow(  )
     {
-        Plugin pluginWorkflow = PluginService.getPlugin( WorkflowPlugin.PLUGIN_NAME );
         ReferenceList listWorkflows = new ReferenceList(  );
 
-        for ( Workflow workflow : WorkflowHome.getListWorkflowsByFilter( new WorkflowFilter(  ), pluginWorkflow ) )
+        for ( Workflow workflow : _workflowService.getListWorkflowsByFilter( new WorkflowFilter(  ) ) )
         {
             listWorkflows.addItem( workflow.getId(  ), workflow.getName(  ) );
         }
@@ -112,19 +155,9 @@ public class CodeMappingService implements ICodeMappingService
     /**
      * {@inheritDoc}
      */
-    public Action getAction( int nIdAction )
-    {
-        Plugin pluginWorkflow = PluginService.getPlugin( WorkflowPlugin.PLUGIN_NAME );
-
-        return ActionHome.findByPrimaryKey( nIdAction, pluginWorkflow );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
+    @Override
     public ReferenceList getListActions( String strMappingTypeKey, int nIdWorkflow )
     {
-        Plugin pluginWorkflow = PluginService.getPlugin( WorkflowPlugin.PLUGIN_NAME );
         CodeMappingFilter cmFilter = new CodeMappingFilter(  );
         cmFilter.setMappingTypeKey( strMappingTypeKey );
 
@@ -133,7 +166,7 @@ public class CodeMappingService implements ICodeMappingService
         ActionFilter aFilter = new ActionFilter(  );
         aFilter.setIdWorkflow( nIdWorkflow );
 
-        for ( Action action : ActionHome.getListActionByFilter( aFilter, pluginWorkflow ) )
+        for ( Action action : _actionService.getListActionByFilter( aFilter ) )
         {
             boolean bIsCodeMapped = false;
 
@@ -163,50 +196,16 @@ public class CodeMappingService implements ICodeMappingService
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean isCodeMappingValid( ICodeMapping codeMapping )
     {
         if ( codeMapping != null )
         {
             if ( codeMapping.isStrict(  ) )
             {
-                return CodeMappingHome.checkCodeMapping( codeMapping );
+                return _codeMappingDAO.checkCodeMapping( codeMapping,
+                    PluginService.getPlugin( MappingsPlugin.PLUGIN_NAME ) );
             }
-
-            return true;
-        }
-
-        return false;
-    }
-
-    // CRUD OPERATIONS
-
-    /**
-     * {@inheritDoc}
-     */
-    public void updateCodeMapping( ICodeMapping codeMapping )
-    {
-        if ( codeMapping != null )
-        {
-            CodeMappingHome.update( codeMapping );
-        }
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public void removeCodeMapping( int nIdCode )
-    {
-        CodeMappingHome.remove( nIdCode );
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public boolean createCodeMapping( ICodeMapping codeMapping )
-    {
-        if ( ( codeMapping != null ) && isCodeMappingValid( codeMapping ) )
-        {
-            CodeMappingHome.create( codeMapping );
 
             return true;
         }

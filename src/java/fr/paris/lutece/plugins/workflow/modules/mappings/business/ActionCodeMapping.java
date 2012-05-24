@@ -33,14 +33,17 @@
  */
 package fr.paris.lutece.plugins.workflow.modules.mappings.business;
 
-import fr.paris.lutece.plugins.workflow.modules.mappings.service.ICodeMappingService;
-import fr.paris.lutece.portal.business.workflow.Action;
-import fr.paris.lutece.portal.business.workflow.Workflow;
+import fr.paris.lutece.plugins.workflowcore.business.action.Action;
+import fr.paris.lutece.plugins.workflowcore.business.workflow.Workflow;
+import fr.paris.lutece.plugins.workflowcore.service.action.IActionService;
+import fr.paris.lutece.plugins.workflowcore.service.workflow.IWorkflowService;
 import fr.paris.lutece.portal.service.util.AppLogService;
 
 import org.apache.commons.lang.StringUtils;
 
 import java.util.Locale;
+
+import javax.inject.Inject;
 
 
 /**
@@ -50,17 +53,10 @@ import java.util.Locale;
  */
 public class ActionCodeMapping extends AbstractCodeMapping
 {
-    /** Position of the id action in the reference code */
-    private ICodeMappingService _codeMappingService;
-
-    /**
-     * Set the code mapping service
-     * @param codeMappingService the code mapping service
-     */
-    public void setCodeMappingService( ICodeMappingService codeMappingService )
-    {
-        _codeMappingService = codeMappingService;
-    }
+    @Inject
+    private IWorkflowService _workflowService;
+    @Inject
+    private IActionService _actionService;
 
     /**
      * {@inheritDoc}
@@ -70,11 +66,11 @@ public class ActionCodeMapping extends AbstractCodeMapping
         if ( StringUtils.isNotBlank( getReferenceCode(  ) ) && StringUtils.isNumeric( getReferenceCode(  ) ) )
         {
             int nIdAction = Integer.parseInt( getReferenceCode(  ) );
-            Action action = _codeMappingService.getAction( nIdAction );
+            Action action = _actionService.findByPrimaryKey( nIdAction );
 
             if ( action != null )
             {
-                Workflow workflow = _codeMappingService.getWorkflow( action.getWorkflow(  ).getId(  ) );
+                Workflow workflow = _workflowService.findByPrimaryKey( action.getWorkflow(  ).getId(  ) );
 
                 if ( workflow != null )
                 {

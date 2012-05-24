@@ -46,6 +46,7 @@ public class SimpleCodeMapping extends AbstractCodeMapping
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getLabelReferenceCode( Locale locale )
     {
         return getReferenceCode(  );

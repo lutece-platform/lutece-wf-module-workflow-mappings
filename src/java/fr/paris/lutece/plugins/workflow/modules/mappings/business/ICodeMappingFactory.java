@@ -31,64 +31,54 @@
  *
  * License 1.0
  */
-package fr.paris.lutece.plugins.workflow.modules.mappings.web.component;
+package fr.paris.lutece.plugins.workflow.modules.mappings.business;
 
 import fr.paris.lutece.plugins.workflow.modules.mappings.business.type.IMappingType;
-import fr.paris.lutece.util.url.UrlItem;
+import fr.paris.lutece.plugins.workflow.modules.mappings.web.component.IMappingTypeComponent;
+import fr.paris.lutece.util.ReferenceList;
 
-import org.apache.commons.lang.StringUtils;
-
-import javax.servlet.http.HttpServletRequest;
+import java.util.Locale;
+import java.util.Map;
 
 
 /**
  *
- * AbstractMappingTypeComponent
+ * ICodeMappingFactory
  *
  */
-public abstract class AbstractMappingTypeComponent implements IMappingTypeComponent
+public interface ICodeMappingFactory
 {
-    // PARAMETERS
-    private static final String PARAMETER_CODE = "code";
-    private static final String PARAMETER_LABEL_CODE = "labelCode";
-    private IMappingType _mappingType;
+    /**
+    * Create a new instance of {@link ICodeMapping}
+    * @param strMappingTypeKey the mapping type key
+    * @return a new instance of {@link ICodeMapping}
+    */
+    ICodeMapping newCodeMapping( String strMappingTypeKey );
 
     /**
-     * {@inheritDoc}
+     * Get the {@link IMappingTypeComponent}
+     * @return a map of (mapping_type_key, {@link IMappingTypeComponent}
      */
-    @Override
-    public void setMappingType( IMappingType mappingType )
-    {
-        this._mappingType = mappingType;
-    }
+    Map<String, IMappingTypeComponent> getMappingTypeComponents(  );
 
     /**
-     * {@inheritDoc}
+     * Get the {@link IMappingTypeComponent} type
+     * @param strMappingTypeKey the mapping type key
+     * @return a {@link IMappingTypeComponent}
      */
-    @Override
-    public IMappingType getMappingType(  )
-    {
-        return _mappingType;
-    }
+    IMappingTypeComponent getMappingTypeComponent( String strMappingTypeKey );
 
     /**
-     * {@inheritDoc}
+     * Get the mapping type
+     * @param strMappingTypeKey the mapping type key
+     * @return a {@link IMappingType}
      */
-    @Override
-    public void addParameter( HttpServletRequest request, UrlItem url )
-    {
-        String strCode = request.getParameter( PARAMETER_CODE );
+    IMappingType getMappingType( String strMappingTypeKey );
 
-        if ( StringUtils.isNotBlank( strCode ) )
-        {
-            url.addParameter( PARAMETER_CODE, strCode );
-        }
-
-        String strLabelCode = request.getParameter( PARAMETER_LABEL_CODE );
-
-        if ( StringUtils.isNotBlank( strLabelCode ) )
-        {
-            url.addParameter( PARAMETER_LABEL_CODE, strLabelCode );
-        }
-    }
+    /**
+     * Get the list of mapping types
+     * @param locale the locale
+     * @return a {@link ReferenceList}
+     */
+    ReferenceList getListMappingTypes( Locale locale );
 }

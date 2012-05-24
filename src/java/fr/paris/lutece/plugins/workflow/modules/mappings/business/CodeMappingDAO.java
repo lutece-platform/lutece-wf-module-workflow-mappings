@@ -39,6 +39,8 @@ import fr.paris.lutece.util.sql.DAOUtil;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 
 /**
  *
@@ -66,20 +68,13 @@ public class CodeMappingDAO implements ICodeMappingDAO
     private static final String SQL_FILTER_LABEL_CODE = " label_code = ? ";
     private static final String SQL_FILTER_REFERENCE_CODE = " reference_code = ? ";
     private static final String SQL_FILTER_MAPPING_TYPE_KEY = " mapping_type_key = ? ";
+    @Inject
     private CodeMappingFactory _codeMappingFactory;
-
-    /**
-     * Set the code mapping factory
-     * @param codeMappingFactory the code mapping factory
-     */
-    public void setCodeMappingFactory( CodeMappingFactory codeMappingFactory )
-    {
-        _codeMappingFactory = codeMappingFactory;
-    }
 
     /**
      * {@inheritDoc}
      */
+    @Override
     public int newPrimaryKey( Plugin plugin )
     {
         DAOUtil daoUtil = new DAOUtil( SQL_QUERY_NEW_PK, plugin );
@@ -100,6 +95,7 @@ public class CodeMappingDAO implements ICodeMappingDAO
     /**
      * {@inheritDoc}
      */
+    @Override
     public synchronized void insert( ICodeMapping codeMapping, Plugin plugin )
     {
         int nIndex = 1;
@@ -120,6 +116,7 @@ public class CodeMappingDAO implements ICodeMappingDAO
     /**
      * {@inheritDoc}
      */
+    @Override
     public ICodeMapping load( int nIdCode, Plugin plugin )
     {
         ICodeMapping codeMapping = null;
@@ -153,6 +150,7 @@ public class CodeMappingDAO implements ICodeMappingDAO
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<ICodeMapping> selectAll( Plugin plugin )
     {
         List<ICodeMapping> listMappings = new ArrayList<ICodeMapping>(  );
@@ -186,6 +184,7 @@ public class CodeMappingDAO implements ICodeMappingDAO
     /**
      * {@inheritDoc}
      */
+    @Override
     public void remove( int nIdCode, Plugin plugin )
     {
         DAOUtil daoUtil = new DAOUtil( SQL_QUERY_DELETE, plugin );
@@ -197,6 +196,7 @@ public class CodeMappingDAO implements ICodeMappingDAO
     /**
      * {@inheritDoc}
      */
+    @Override
     public void update( ICodeMapping codeMapping, Plugin plugin )
     {
         int nIndex = 1;
@@ -213,6 +213,7 @@ public class CodeMappingDAO implements ICodeMappingDAO
     /**
      * {@inheritDoc}
      */
+    @Override
     public boolean checkCodeMapping( ICodeMapping codeMapping, Plugin plugin )
     {
         int nIndex = 1;
@@ -235,6 +236,7 @@ public class CodeMappingDAO implements ICodeMappingDAO
     /**
      * {@inheritDoc}
      */
+    @Override
     public List<ICodeMapping> selectByFilter( CodeMappingFilter cmFilter, Plugin plugin )
     {
         List<ICodeMapping> listCodeMappings = new ArrayList<ICodeMapping>(  );

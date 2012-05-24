@@ -35,6 +35,8 @@ package fr.paris.lutece.plugins.workflow.modules.mappings.web;
 
 import fr.paris.lutece.plugins.workflow.modules.mappings.business.CodeMappingFactory;
 import fr.paris.lutece.plugins.workflow.modules.mappings.business.ICodeMapping;
+import fr.paris.lutece.plugins.workflow.modules.mappings.business.ICodeMappingFactory;
+import fr.paris.lutece.plugins.workflow.modules.mappings.service.CodeMappingService;
 import fr.paris.lutece.plugins.workflow.modules.mappings.service.ICodeMappingService;
 import fr.paris.lutece.plugins.workflow.modules.mappings.web.component.IMappingTypeComponent;
 import fr.paris.lutece.portal.service.i18n.I18nService;
@@ -68,10 +70,6 @@ import javax.validation.ConstraintViolation;
 public class CodeMappingJspBean extends PluginAdminPageJspBean
 {
     public static final String RIGHT_MANAGE_MAPPINGS = "WORKFLOW_MAPPINGS_MANAGEMENT";
-
-    // BEANS
-    private static final String BEAN_CODE_MAPPING_SERVICE = "workflow-mappings.codeMappingService";
-    private static final String BEAN_CODE_MAPPING_FACTORY = "workflow-mappings.codeMappingFactory";
 
     // PROPERTIES
     private static final String PROPERTY_MANAGE_MAPPINGS_PAGE_TITLE = "module.workflow.mappings.manageMappings.pageTitle";
@@ -119,8 +117,8 @@ public class CodeMappingJspBean extends PluginAdminPageJspBean
     private static final String JSP_URL_DO_REMOVE_CODE_MAPPING = "jsp/admin/plugins/workflow/modules/mappings/DoRemoveCodeMapping.jsp";
 
     // SERVICES
-    private ICodeMappingService _codeMappingService = (ICodeMappingService) SpringContextService.getBean( BEAN_CODE_MAPPING_SERVICE );
-    private CodeMappingFactory _codeMappingFactory = (CodeMappingFactory) SpringContextService.getBean( BEAN_CODE_MAPPING_FACTORY );
+    private ICodeMappingService _codeMappingService = SpringContextService.getBean( CodeMappingService.BEAN_SERVICE );
+    private ICodeMappingFactory _codeMappingFactory = SpringContextService.getBean( CodeMappingFactory.BEAN_FACTORY );
 
     // GET
 

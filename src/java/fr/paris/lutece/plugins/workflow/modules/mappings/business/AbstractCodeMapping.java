@@ -57,6 +57,7 @@ public abstract class AbstractCodeMapping implements ICodeMapping
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setIdCode( int nIdCode )
     {
         this._nIdCode = nIdCode;
@@ -65,14 +66,16 @@ public abstract class AbstractCodeMapping implements ICodeMapping
     /**
      * {@inheritDoc}
      */
+    @Override
     public int getIdCode(  )
     {
         return _nIdCode;
     }
 
     /**
-    * {@inheritDoc}
-    */
+     * {@inheritDoc}
+     */
+    @Override
     public String getCode(  )
     {
         return _strCode;
@@ -81,6 +84,7 @@ public abstract class AbstractCodeMapping implements ICodeMapping
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setCode( String strCodeToMap )
     {
         this._strCode = strCodeToMap;
@@ -89,6 +93,7 @@ public abstract class AbstractCodeMapping implements ICodeMapping
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getReferenceCode(  )
     {
         return _strReferenceCode;
@@ -97,6 +102,7 @@ public abstract class AbstractCodeMapping implements ICodeMapping
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setReferenceCode( String strRefenreceCode )
     {
         this._strReferenceCode = strRefenreceCode;
@@ -105,6 +111,7 @@ public abstract class AbstractCodeMapping implements ICodeMapping
     /**
      * {@inheritDoc}
      */
+    @Override
     public String getLabelCode(  )
     {
         return _strLabelCode;
@@ -113,6 +120,7 @@ public abstract class AbstractCodeMapping implements ICodeMapping
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setLabelCode( String strLabelCode )
     {
         this._strLabelCode = strLabelCode;
@@ -121,6 +129,7 @@ public abstract class AbstractCodeMapping implements ICodeMapping
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setMappingType( IMappingType mappingType )
     {
         this._mappingType = mappingType;
@@ -129,6 +138,7 @@ public abstract class AbstractCodeMapping implements ICodeMapping
     /**
      * {@inheritDoc}
      */
+    @Override
     public IMappingType getMappingType(  )
     {
         return _mappingType;
@@ -137,14 +147,16 @@ public abstract class AbstractCodeMapping implements ICodeMapping
     /**
      * {@inheritDoc}
      */
+    @Override
     public void setStrict( boolean bIsStrict )
     {
         this._bIsStrict = bIsStrict;
     }
 
     /**
-    * {@inheritDoc}
-    */
+     * {@inheritDoc}
+     */
+    @Override
     public boolean isStrict(  )
     {
         return _bIsStrict;

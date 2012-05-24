@@ -33,9 +33,6 @@
  */
 package fr.paris.lutece.plugins.workflow.modules.mappings.business;
 
-import fr.paris.lutece.plugins.workflow.modules.mappings.business.CodeMappingFactory;
-import fr.paris.lutece.plugins.workflow.modules.mappings.business.ICodeMapping;
-import fr.paris.lutece.plugins.workflow.modules.mappings.business.ICodeMappingDAO;
 import fr.paris.lutece.plugins.workflow.modules.mappings.service.MappingsPlugin;
 import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.portal.service.plugin.PluginService;
@@ -50,7 +47,6 @@ import fr.paris.lutece.test.LuteceTestCase;
  */
 public class CodeMappingTest extends LuteceTestCase
 {
-    private static final String BEAN_CODE_MAPPING_FACTORY = "workflow-mappings.codeMappingFactory";
     private static final String BEAN_CODE_MAPPING_DAO = "workflow-mappings.codeMappingDAO";
     private static final String MAPPING_TYPE_SIMPE = "workflow-mappings.simpleMapping";
     private static final String CODE1 = "Code1";
@@ -65,14 +61,14 @@ public class CodeMappingTest extends LuteceTestCase
     public void testBusiness(  )
     {
         // Initialize an object
-        CodeMappingFactory codeMappingFactory = (CodeMappingFactory) SpringContextService.getBean( BEAN_CODE_MAPPING_FACTORY );
+        ICodeMappingFactory codeMappingFactory = SpringContextService.getBean( CodeMappingFactory.BEAN_FACTORY );
         ICodeMapping codeMapping = codeMappingFactory.newCodeMapping( MAPPING_TYPE_SIMPE );
         codeMapping.setCode( CODE1 );
         codeMapping.setLabelCode( LABEL_CODE1 );
         codeMapping.setReferenceCode( REFERENCE_CODE1 );
 
         // Test create
-        ICodeMappingDAO dao = (ICodeMappingDAO) SpringContextService.getBean( BEAN_CODE_MAPPING_DAO );
+        ICodeMappingDAO dao = SpringContextService.getBean( BEAN_CODE_MAPPING_DAO );
         Plugin plugin = PluginService.getPlugin( MappingsPlugin.PLUGIN_NAME );
         dao.insert( codeMapping, plugin );
 

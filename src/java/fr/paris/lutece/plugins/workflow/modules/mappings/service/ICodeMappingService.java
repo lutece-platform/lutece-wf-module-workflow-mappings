@@ -33,10 +33,11 @@
  */
 package fr.paris.lutece.plugins.workflow.modules.mappings.service;
 
+import fr.paris.lutece.plugins.workflow.modules.mappings.business.CodeMappingFilter;
 import fr.paris.lutece.plugins.workflow.modules.mappings.business.ICodeMapping;
-import fr.paris.lutece.portal.business.workflow.Action;
-import fr.paris.lutece.portal.business.workflow.Workflow;
 import fr.paris.lutece.util.ReferenceList;
+
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -48,6 +49,28 @@ import java.util.List;
  */
 public interface ICodeMappingService
 {
+    /**
+    * Update the code mapping
+    * @param codeMapping the code mapping
+    */
+    @Transactional( "workflow-mappings.transactionManager" )
+    void updateCodeMapping( ICodeMapping codeMapping );
+
+    /**
+     * Remove the code mapping
+     * @param nIdCode the id code
+     */
+    @Transactional( "workflow-mappings.transactionManager" )
+    void removeCodeMapping( int nIdCode );
+
+    /**
+     * Create a code mapping
+     * @param codeMapping the code mapping
+     * @return true if the code mapping is created, false otherwise
+     */
+    @Transactional( "workflow-mappings.transactionManager" )
+    boolean createCodeMapping( ICodeMapping codeMapping );
+
     // GET
 
     /**
@@ -57,25 +80,18 @@ public interface ICodeMappingService
     List<ICodeMapping> getListCodeMappings(  );
 
     /**
+     * Get the list of code mappings by filter
+     * @param cmFilter the filter
+     * @return a list of {@link ICodeMapping}
+     */
+    List<ICodeMapping> getListCodeMappingsByFilter( CodeMappingFilter cmFilter );
+
+    /**
      * Get the {@link ICodeMapping}
      * @param nIdCode the id code
      * @return a {@link ICodeMapping}
      */
     ICodeMapping getCodeMapping( int nIdCode );
-
-    /**
-     * Get the workflow action
-     * @param nIdAction the id action
-     * @return the workflow action
-     */
-    Action getAction( int nIdAction );
-
-    /**
-     * Get the workflow
-     * @param nIdWorkflow the id workflow
-     * @return the workflow
-     */
-    Workflow getWorkflow( int nIdWorkflow );
 
     /**
      * Get the list of workflows
@@ -99,25 +115,4 @@ public interface ICodeMappingService
      * @return true if the code mapping does not exist yet, false otherwise
      */
     boolean isCodeMappingValid( ICodeMapping codeMapping );
-
-    // CRUD OPERATIONS
-
-    /**
-     * Update the code mapping
-     * @param codeMapping the code mapping
-     */
-    void updateCodeMapping( ICodeMapping codeMapping );
-
-    /**
-     * Remove the code mapping
-     * @param nIdCode the id code
-     */
-    void removeCodeMapping( int nIdCode );
-
-    /**
-     * Create a code mapping
-     * @param codeMapping the code mapping
-     * @return true if the code mapping is created, false otherwise
-     */
-    boolean createCodeMapping( ICodeMapping codeMapping );
 }
