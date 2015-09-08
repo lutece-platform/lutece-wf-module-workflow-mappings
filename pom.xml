@@ -10,7 +10,7 @@
     <groupId>fr.paris.lutece.plugins</groupId>
     <artifactId>module-workflow-mappings</artifactId>
     <packaging>lutece-plugin</packaging>
-    <version>2.0.1-SNAPSHOT</version>
+    <version>2.0.1</version>
     <name>Workflow mappings module</name>
 
     <repositories>
@@ -41,5 +41,6 @@
         <connection>scm:git:https://github.com/lutece-platform/lutece-wf-module-workflow-mappings.git</connection>
         <developerConnection>scm:git:https://github.com/lutece-platform/lutece-wf-module-workflow-mappings.git</developerConnection>
         <url>https://github.com/lutece-platform/lutece-wf-module-workflow-mappings.git</url>
-    </scm>
+      <tag>lutece-wf-module-workflow-mappings-2.0.1</tag>
+  </scm>
 </project>
